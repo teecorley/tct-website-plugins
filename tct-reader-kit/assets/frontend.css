@@ -1,0 +1,211 @@
+/*
+ * TCT Reader Kit — sidebar TOC + newsletter form.
+ * Colours inherit from the theme where possible so this doesn't fight the palette.
+ */
+
+/* ---------------------------------------------------------------- Contents */
+
+.tct-toc {
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	border-radius: 4px;
+	padding: 1.25rem 1.25rem 1rem;
+	background: rgba(0, 0, 0, 0.015);
+	font-size: 0.9rem;
+	line-height: 1.45;
+}
+
+/*
+ * Sticky is applied ONLY when the TOC is the last element in its column.
+ *
+ * A sticky element is shifted visually without moving its siblings, so a sticky
+ * TOC followed by anything else (e.g. a newsletter box) slides straight over that
+ * content as the page scrolls. The :last-child guard makes the option self-limiting:
+ * when something follows the TOC, it simply stays in normal flow instead of
+ * overlapping. To have a sticky sidebar containing several boxes, make the column
+ * itself sticky rather than the TOC.
+ */
+.tct-toc--sticky:last-child {
+	position: sticky;
+	top: 2rem;
+	/* Never let a long TOC run past the viewport; scroll inside instead. */
+	max-height: calc(100vh - 4rem);
+	overflow-y: auto;
+}
+
+.tct-toc__title {
+	margin: 0 0 0.75rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 2px solid currentColor;
+	font-size: 0.8rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.tct-toc__list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: none;
+}
+
+.tct-toc__item {
+	margin: 0 0 0.6rem;
+}
+
+.tct-toc__item:last-child {
+	margin-bottom: 0;
+}
+
+/* Indent h3s under their h2 */
+.tct-toc__item--h3 {
+	padding-left: 0.9rem;
+	font-size: 0.85rem;
+	opacity: 0.85;
+}
+
+.tct-toc__link {
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 2px;
+}
+
+.tct-toc__link:hover,
+.tct-toc__link:focus {
+	text-decoration-thickness: 2px;
+}
+
+/* Stop anchor jumps from hiding headings under a sticky header. */
+:where(h2, h3)[id] {
+	scroll-margin-top: 2rem;
+}
+
+/* ------------------------------------------------------------- Newsletter */
+
+.tct-news {
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	border-radius: 4px;
+	padding: 1.25rem;
+	background: rgba(0, 0, 0, 0.03);
+}
+
+.tct-news__title {
+	margin: 0 0 0.4rem;
+	font-size: 1.05rem;
+	font-weight: 700;
+	line-height: 1.25;
+}
+
+.tct-news__blurb {
+	margin: 0 0 0.9rem;
+	font-size: 0.85rem;
+	line-height: 1.45;
+	opacity: 0.8;
+}
+
+.tct-news__form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+}
+
+.tct-news__label {
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	opacity: 0.75;
+}
+
+.tct-news__input {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.55rem 0.65rem;
+	border: 1px solid rgba(0, 0, 0, 0.25);
+	border-radius: 3px;
+	background: #fff;
+	font: inherit;
+	font-size: 0.9rem;
+}
+
+.tct-news__input:focus {
+	outline: 2px solid currentColor;
+	outline-offset: 1px;
+}
+
+.tct-news__button {
+	margin-top: 0.5rem;
+	padding: 0.6rem 1rem;
+	border: 0;
+	border-radius: 3px;
+	background: currentColor;
+	color: inherit;
+	font: inherit;
+	font-size: 0.9rem;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+/* Keep label text readable against the currentColor fill. */
+.tct-news__button {
+	background: #2f3b30;
+	color: #fff;
+}
+
+.tct-news__button:hover,
+.tct-news__button:focus {
+	opacity: 0.88;
+}
+
+.tct-news__msg {
+	margin: 0 0 0.75rem;
+	padding: 0.5rem 0.65rem;
+	border-radius: 3px;
+	font-size: 0.85rem;
+	line-height: 1.4;
+}
+
+.tct-news__msg--ok {
+	background: rgba(47, 110, 60, 0.12);
+}
+
+.tct-news__msg--err {
+	background: rgba(150, 45, 35, 0.12);
+}
+
+/* Honeypot — hidden from humans but not via display:none, which some bots detect. */
+.tct-news__hp {
+	position: absolute !important;
+	left: -9999px !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+/* -------------------------------------------------------- Sidebar column */
+
+/*
+ * On narrow screens the sidebar column stacks under the article. Un-stick the TOC
+ * there — a sticky box in a stacked layout just floats over the text awkwardly.
+ */
+@media (max-width: 781px) {
+	.tct-toc--sticky:last-child {
+		position: static;
+		max-height: none;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	.tct-toc,
+	.tct-news {
+		border-color: rgba(255, 255, 255, 0.18);
+		background: rgba(255, 255, 255, 0.04);
+	}
+
+	.tct-news__input {
+		background: rgba(0, 0, 0, 0.25);
+		border-color: rgba(255, 255, 255, 0.25);
+		color: inherit;
+	}
+}
